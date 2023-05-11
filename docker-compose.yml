@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+  db:
+    image: mariadb:latest
+    container_name: nextcloud-mariadb
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW --innodb_read_only_compressed=OFF
+    volumes:
+      - ./db-config:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=[ROOT PASSWORD]
+      - MYSQL_PASSWORD=[DATABASE PASSWORD]
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  app:
+    image: azamserver/nextcloud-imagemagick-ffmpeg:latest
+    container_name: nextcloud-nextcloud
+    restart: unless-stopped
+    ports:
+      - 80:80
+    links:
+      - db
+    volumes:
+      - ./config:/var/www/html
+      - ./data:/var/www/html/data
+    environment:
+      - MYSQL_PASSWORD=[DATABASE PASSWORD]
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+      - PHP_MEMORY_LIMIT=4G

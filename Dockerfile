@@ -8,5 +8,5 @@ RUN apt-get update \
     && apt-get install -y \
     imagemagick \
     ffmpeg \
-    php-bz2 \
+    php8.2-bz2 \
     && rm -rf /var/lib/apt/lists/*

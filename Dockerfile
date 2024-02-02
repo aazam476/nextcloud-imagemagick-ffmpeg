@@ -8,5 +8,7 @@ RUN apt-get update \
     && apt-get install -y \
     imagemagick \
     ffmpeg \
-    php8.2-bz2 \
+    libbz2-dev \
     && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install bz2
